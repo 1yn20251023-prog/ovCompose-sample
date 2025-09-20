@@ -17,7 +17,10 @@
 
 import android.databinding.tool.ext.capitalizeUS
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinUsages
+import org.jetbrains.kotlin.gradle.plugin.usesPlatformOf
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -25,6 +28,10 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.cocoapods)
+}
+
+val composeMultiplatformCoreIncluded = rootProject.gradle.includedBuilds.any {
+    it.name == "ovCompose-multiplatform-core"
 }
 
 kotlin {
@@ -77,15 +84,39 @@ kotlin {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
         }
+
         commonMain.dependencies {
-            implementation(libs.jetbrains.compose.runtime)
-            implementation(libs.jetbrains.compose.foundation)
-            implementation(libs.jetbrains.compose.material)
-            implementation(libs.jetbrains.compose.ui)
+            if (composeMultiplatformCoreIncluded) {
+                implementation(project(":androidxStubs:annotation"))
+                implementation(project(":androidxStubs:collection"))
+            }
+            implementation(compose.runtime)
+            implementation(compose.foundation)
+            implementation(compose.material)
+            implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.atomicFu)
+        }
+
+        // fix cinterop dependencies.
+        if (composeMultiplatformCoreIncluded) {
+            targets.filterIsInstance<KotlinNativeTarget>().forEach { target ->
+                val main by target.compilations.getting
+                val cInteropExtend =
+                    configurations.create("${target.name}CInteropExtend") {
+                        configurations.findByName(main.implementationConfigurationName)?.let {
+                            extendsFrom(it)
+                        }
+                        usesPlatformOf(target)
+                        attributes.attribute(
+                            Usage.USAGE_ATTRIBUTE,
+                            objects.named(Usage::class.java, KotlinUsages.KOTLIN_API)
+                        )
+                    }
+                main.cinterops.all { dependencyFiles += cInteropExtend }
+            }
         }
 
         val ohosArm64Main by getting {

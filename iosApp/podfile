@@ -2,4 +2,7 @@ use_frameworks! :linkage => :static
 
 target 'iosApp' do
     pod 'composeApp', :path => '../composeApp'
+    pod 'CMPUIKitUtils', :path => '../../ovCompose-multiplatform-core/compose/ui/ui-uikit/src/uikitMain/objc/CMPUIKitUtils'
+    # 如果使用了带有compose:common的patch，需要加上下行
+    # pod 'UIKitComposeUtils', :path => '../../ovCompose-multiplatform-core/compose/common/src/uikitMain/objectc/UIKitComposeUtils'
 end
