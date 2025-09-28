@@ -17,9 +17,11 @@
 
 package com.tencent.compose
 
+import androidx.compose.ui.arkui.RenderingBackend
 import androidx.compose.ui.window.ComposeArkUIViewController
 import com.tencent.compose.sample.NativeResourceManager
 import com.tencent.compose.sample.mainpage.MainPage
+import com.tencent.compose.sample.mainpage.ThreeBoxesExample
 import com.tencent.compose.sample.nativeResourceManager
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.initMainHandler
@@ -31,7 +33,14 @@ import kotlin.experimental.ExperimentalNativeApi
 @CName("MainArkUIViewController")
 fun MainArkUIViewController(env: napi_env): napi_value {
     initMainHandler(env)
-    return ComposeArkUIViewController(env) { MainPage() }
+//    return ComposeArkUIViewController(env) { MainPage() }
+//    return ComposeArkUIViewController(env) { ThreeBoxesExample() }
+    return ComposeArkUIViewController(env, configure = {
+        renderingBackend = RenderingBackend.ArkUIRenderNode
+    }) {
+        ThreeBoxesExample()
+//        MainPage()
+    }
 }
 
 @OptIn(ExperimentalForeignApi::class)

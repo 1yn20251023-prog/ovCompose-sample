@@ -7,7 +7,9 @@
   "license": "",
   "dependencies": {
     "libentry.so": "file:./src/main/cpp/types/libentry",
-    "compose": "file:./libs/compose.har",
+//    "compose": "file:./libs/compose.har",
+    "compose": "file:../../../ovCompose-multiplatform-core/compose/ui/ui-arkui/src/ohosArm64Main/cpp/compose",
+
     "skikobridge": "file:./libs/skikobridge.har"
   }
 }

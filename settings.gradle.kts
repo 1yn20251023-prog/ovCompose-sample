@@ -20,9 +20,7 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
     repositories {
-        maven("/Users/shiqi1007/.m2/repository")
-        maven("https://mirrors.tencent.com/repository/maven/tencentvideo")
-        maven("https://mirrors.tencent.com/repository/maven/tmm-snapshot")
+        mavenLocal()
         maven("https://mirrors.tencent.com/nexus/repository/maven-tencent")
         maven("https://mirrors.tencent.com/nexus/repository/maven-public")
         google {
@@ -42,9 +40,7 @@ pluginManagement {
 
 dependencyResolutionManagement {
     repositories {
-        maven("/Users/shiqi1007/.m2/repository")
-        maven("https://mirrors.tencent.com/repository/maven/tencentvideo")
-        maven("https://mirrors.tencent.com/repository/maven/tmm-snapshot")
+        mavenLocal()
         maven("https://mirrors.tencent.com/nexus/repository/maven-tencent")
         maven("https://mirrors.tencent.com/nexus/repository/maven-public")
         google {
@@ -61,9 +57,4 @@ dependencyResolutionManagement {
 include(":composeApp")
 include(":androidxStubs:annotation")
 include(":androidxStubs:collection")
-//val composeCorProject = file("../ovCompose-mutiplatform-core")
-//if (composeCorProject.exists()) {
-//    includeBuild(composeCorProject)
-//    logger.trace("Include compose-multiplatform-core via Composite-Build.")
-//}
 includeBuild("../ovCompose-multiplatform-core")

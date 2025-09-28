@@ -15,7 +15,8 @@
  * limitations under the License.
  */
 
-import { Compose } from 'compose';
+//import { Compose } from 'compose';
+import { ComposeV2 } from 'compose';
 import { MainArkUIViewController } from 'libentry.so';
 import { registerComposeInteropBuilders } from './ComposeSample';
 
@@ -41,7 +42,7 @@ struct Index {
 
   build() {
     Stack() {
-      Compose(
+      ComposeV2(
         {
           controller: this.controller,
           libraryName: "entry",

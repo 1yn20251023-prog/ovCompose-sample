@@ -36,6 +36,11 @@
           ]
         }
       ]
+    },
+    {
+      "name": "compose",
+      "srcPath": "../../ovCompose-multiplatform-core/compose/ui/ui-arkui/src/ohosArm64Main/cpp/compose"
+
     }
   ]
 }
