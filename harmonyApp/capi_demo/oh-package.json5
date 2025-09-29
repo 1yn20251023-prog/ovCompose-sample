@@ -1,0 +1,11 @@
+{
+  "name": "capi_demo",
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "main": "",
+  "author": "",
+  "license": "",
+  "dependencies": {
+//    "libcapirendernodedemomodule.so": "file:./src/main/cpp/types/libcapirendernodedemomodule"
+  }
+}

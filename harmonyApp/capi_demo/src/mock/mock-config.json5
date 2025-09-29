@@ -1,0 +1,5 @@
+{
+  "libcapirendernodedemomodule.so": {
+    "source": "src/mock/Libcapirendernodedemomodule.mock.ets"
+  }
+}
