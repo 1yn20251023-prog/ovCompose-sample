@@ -1,0 +1,16 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "CapiRenderNodeDemoModuleAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "CapiRenderNodeDemoModuleAbility_label",
+      "value": "label"
+    }
+  ]
+}

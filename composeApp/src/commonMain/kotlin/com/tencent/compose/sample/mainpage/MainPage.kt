@@ -38,11 +38,14 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -59,139 +62,83 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.huawei.compose.caniuseext.createCanIUseManager
 import com.tencent.compose.sample.backhandler.BackHandler
 import com.tencent.compose.sample.data.DisplayItem
 import com.tencent.compose.sample.data.DisplaySection
 import com.tencent.compose.sample.rememberLocalImage
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
-private fun appBarTitle(openedExample: DisplayItem?, skiaRender: Boolean = true): String {
-    val title =
-        if (skiaRender) "Tencent Video Compose - Skia" else "Tencent Video Compose - UIKit"
 
-    val childTitle =
-        if (skiaRender) "${openedExample?.title} - Skia" else "${openedExample?.title} - UIKit"
-
-    return if (openedExample != null) childTitle else title
-}
 
 @Composable
 internal fun MainPage(skiaRender: Boolean = true) {
-    val displayItems by remember { mutableStateOf(displaySections()) }
-    var openedExample: DisplayItem? by remember { mutableStateOf(null) }
-    val listState = rememberLazyListState()
-    BackHandler(openedExample != null) {
-        openedExample = null
-    }
-    Column {
-        TopAppBar(
-            navigationIcon = {
-                if (openedExample == null) return@TopAppBar
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Back",
-                    modifier = Modifier.clickable { openedExample = null }
-                )
-            },
-            title = {
-                val title = appBarTitle(openedExample, skiaRender)
-                Text(title)
-            }
-        )
+    var result by remember { mutableStateOf("点击按钮开始检测") }
 
-        AnimatedContent(
-            targetState = openedExample,
-            transitionSpec = {
-                val slideDirection =
-                    if (targetState != null) AnimatedContentTransitionScope.SlideDirection.Start
-                    else AnimatedContentTransitionScope.SlideDirection.End
+    // 使用管理器进行非响应式检测
+    val manager = createCanIUseManager()
 
-                slideIntoContainer(
-                    animationSpec = tween(250, easing = FastOutSlowInEasing),
-                    towards = slideDirection
-                ) + fadeIn(animationSpec = tween(250)) togetherWith
-                        slideOutOfContainer(
-                            animationSpec = tween(250, easing = FastOutSlowInEasing),
-                            towards = slideDirection
-                        ) + fadeOut(animationSpec = tween(250))
-            }
-        ) { target ->
-            if (target == null) {
-                LazyColumn(state = listState) {
-                    items(displayItems) { displayItem ->
-                        Section(displayItem) { clickItem ->
-                            openedExample = clickItem
-                        }
-                    }
-
-                    item {
-                        Spacer(Modifier.fillMaxWidth().height(20.dp))
-                    }
-                }
-            } else {
-                Box(Modifier.fillMaxSize()) {
-                    target.content()
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun Section(displaySection: DisplaySection, itemClick: (displayItem: DisplayItem) -> Unit) {
-    Column {
-        SectionTitle(displaySection.sectionTitle)
-        val chunkedItems = displaySection.items.chunked(3)
-        chunkedItems.forEach { rowItems ->
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                rowItems.forEach { BoxItem(it, itemClick) }
-
-                repeat(3 - rowItems.size) {
-                    Spacer(Modifier.weight(0.33f))
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun SectionTitle(title: String) {
-    Row(
-        Modifier.fillMaxWidth().height(34.dp).background(Color.Black.copy(alpha = 0.11f)),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Spacer(Modifier.fillMaxHeight().width(10.dp))
-        Text(
-            text = title,
-            fontSize = 16.sp,
-            color = Color.Black.copy(alpha = 0.7f),
-            fontWeight = FontWeight.Medium
-        )
-    }
-}
-
-@OptIn(ExperimentalResourceApi::class)
-@Composable
-private fun RowScope.BoxItem(
-    displayItem: DisplayItem,
-    itemClick: (displayItem: DisplayItem) -> Unit
-) {
     Column(
-        Modifier.weight(0.33f)
-            .height(86.dp)
-            .border(0.3.dp, color = Color.LightGray).clickable {
-                itemClick(displayItem)
-            },
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-        Image(
-            modifier = Modifier.width(34.dp).size(28.dp),
-            bitmap = rememberLocalImage(displayItem.img),
-            contentDescription = null
-        )
+        // 按钮1：检测基础ArkUI能力（非响应式）
+        Button(
+            onClick = {
+                val isAvailable = manager.checkCapability(
+                    "SystemCapability.ArkUI.ArkUI.Full"
+                )
+                result = if (isAvailable) {
+                    "✅ 基础ArkUI能力：可用"
+                } else {
+                    "❌ 基础ArkUI能力：不可用"
+                }
+            },
+            modifier = Modifier.width(300.dp),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color(0xFF00b42a)
+            )
+        ) {
+            Text(
+                "检测基础ArkUI能力（非响应式）",
+                color = Color.White,
+                fontSize = 20.sp
+            )
+        }
 
-        Spacer(Modifier.fillMaxWidth().height(10.dp))
-        Text(text = displayItem.title, fontSize = 14.sp, color = Color.Black.copy(alpha = 0.7f))
+        // 按钮2：检测屏幕时间守护能力（非响应式）
+        Button(
+            onClick = {
+                val isAvailable = manager.checkCapability(
+                    "SystemCapability.ScreenTimeGuard.GuardService"
+                )
+                result = if (isAvailable) {
+                    "✅ 屏幕时间守护：可用"
+                } else {
+                    "❌ 屏幕时间守护：不可用"
+                }
+            },
+            modifier = Modifier.width(300.dp),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color(0xFFf53f3f)
+            )
+        ) {
+            Text(
+                "检测屏幕时间守护能力（不可用）",
+                color = Color.White,
+                fontSize = 20.sp
+            )
+        }
+
+        // 结果显示
+        Text(
+            text = result,
+            fontSize = 26.sp,
+            color = Color(0xFFDB7093),
+            modifier = Modifier.width(300.dp)
+        )
     }
 }

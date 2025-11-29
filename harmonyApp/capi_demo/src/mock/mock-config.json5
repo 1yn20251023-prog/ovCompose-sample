@@ -1,0 +1,5 @@
+{
+  "libcapi_demo.so": {
+    "source": "src/mock/Libcapi_demo.mock.ets"
+  }
+}

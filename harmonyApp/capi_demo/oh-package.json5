@@ -1,0 +1,11 @@
+{
+  "name": "capi_demo",
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "main": "",
+  "author": "",
+  "license": "",
+  "dependencies": {
+    "libcapi_demo.so": "file:./src/main/cpp/types/libcapi_demo"
+  }
+}

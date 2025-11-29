@@ -1,6 +1,20 @@
 {
   "app": {
-    "signingConfigs": [],
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "/Users/lei/.ohos/config/default_harmonyApp_TIehFjX1SOGaf0KrooezfoajdKBf_EBBCs6Bk5sMnvo=.cer",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001B1D8B95932780BCCBC5644CC681D69B28FAA5D6512E2FCD5F67E239351DF039FEA62304923CAD7B",
+          "profile": "/Users/lei/.ohos/config/default_harmonyApp_TIehFjX1SOGaf0KrooezfoajdKBf_EBBCs6Bk5sMnvo=.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "/Users/lei/.ohos/config/default_harmonyApp_TIehFjX1SOGaf0KrooezfoajdKBf_EBBCs6Bk5sMnvo=.p12",
+          "storePassword": "0000001B70603F1BD51E7091F05E7CC80376EB94EBB217B40C30BE953EF9A38C93F9019413D1A72FAC650D"
+        }
+      }
+    ],
     "products": [
       {
         "name": "default",
@@ -28,6 +42,18 @@
     {
       "name": "entry",
       "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "capi_demo",
+      "srcPath": "./capi_demo",
       "targets": [
         {
           "name": "default",

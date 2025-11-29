@@ -86,6 +86,8 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.atomicFu)
+            // 添加 CanIUse 扩展库依赖（需要在 commonMain 中添加，因为 MainPage.kt 在 commonMain 中使用）
+           implementation("com.huawei.compose:caniuseext:1.0.0")
         }
 
         val ohosArm64Main by getting {

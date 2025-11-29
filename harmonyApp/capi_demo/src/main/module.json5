@@ -1,0 +1,28 @@
+{
+  "module": {
+    "name": "capi_demo",
+    "type": "feature",
+    "description": "$string:module_desc",
+    "mainElement": "CapiRenderNodeDemoModuleAbility",
+    "deviceTypes": [
+      "phone",
+      "tablet",
+      "2in1"
+    ],
+    "deliveryWithInstall": true,
+    "installationFree": false,
+    "pages": "$profile:main_pages",
+    "abilities": [
+      {
+        "name": "CapiRenderNodeDemoModuleAbility",
+        "srcEntry": "./ets/capirendernodedemomoduleability/CapiRenderNodeDemoModuleAbility.ets",
+        "description": "$string:CapiRenderNodeDemoModuleAbility_desc",
+        "icon": "$media:layered_image",
+        "label": "$string:CapiRenderNodeDemoModuleAbility_label",
+        "startWindowIcon": "$media:startIcon",
+        "startWindowBackground": "$color:start_window_background",
+        "exported": true
+      }
+    ]
+  }
+}
